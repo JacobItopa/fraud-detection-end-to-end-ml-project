@@ -1,0 +1,48 @@
+# ── GCP Cloud Build CI/CD Configuration ──────────────────────────────────────
+# Triggered automatically when you push to the connected GitHub branch.
+# Replace YOUR_PROJECT_ID with your actual GCP project ID.
+#
+# Steps:
+#   1. Build the Docker image
+#   2. Push to Google Artifact Registry
+#   3. Deploy to Cloud Run
+
+steps:
+  # Step 1: Build the Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/fraud-detection-api:$COMMIT_SHA"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/fraud-detection-api:latest"
+      - "."
+
+  # Step 2: Push image to Google Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "--all-tags"
+      - "gcr.io/$PROJECT_ID/fraud-detection-api"
+
+  # Step 3: Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "fraud-detection-api"
+      - "--image=gcr.io/$PROJECT_ID/fraud-detection-api:$COMMIT_SHA"
+      - "--platform=managed"
+      - "--region=us-central1"
+      - "--allow-unauthenticated"
+      - "--memory=1Gi"
+      - "--cpu=1"
+      - "--min-instances=0"     # Scale to zero when idle (cost saving)
+      - "--max-instances=10"
+
+images:
+  - "gcr.io/$PROJECT_ID/fraud-detection-api"
+
+options:
+  logging: CLOUD_LOGGING_ONLY

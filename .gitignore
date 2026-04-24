@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Virtual Environments
+venv/
+.venv/
+env/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Data (We don't want to upload large data)
+/data/raw/*
+/data/interim/*
+/data/processed/*
+/data/external/*
+*.zip
+
+# Models (Ignore all except the final tuned models for deployment)
+/models/*
+!/models/xgboost_tuned.pkl
+!/models/robust_scaler.pkl
+
+# Logs
+/logs/
+
+# Pytest
+.pytest_cache/
+
+# macOS
+.DS_Store

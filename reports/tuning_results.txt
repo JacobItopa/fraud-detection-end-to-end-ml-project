@@ -1,0 +1,37 @@
+=== Step 6: Hyperparameter Tuning Results ===
+
+Search sample size: 200,000 rows
+CV folds: 3 | Iterations per model: 10
+
+Best XGBoost Params:
+{'subsample': 1.0, 'n_estimators': 300, 'max_depth': 8, 'learning_rate': 0.1, 'colsample_bytree': 1.0}
+
+Best LightGBM Params:
+{'reg_alpha': 0.0, 'num_leaves': 127, 'n_estimators': 300, 'min_child_samples': 20, 'learning_rate': 0.05}
+
+
+=== Final Test Results (Held-out 20%) ===
+
+--- XGBoost (Tuned) ---
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00   1270881
+           1       0.87      0.99      0.93      1643
+
+    accuracy                           1.00   1272524
+   macro avg       0.93      1.00      0.96   1272524
+weighted avg       1.00      1.00      1.00   1272524
+
+PR AUC: 0.9882
+
+--- LightGBM (Tuned) ---
+              precision    recall  f1-score   support
+
+           0       1.00      0.96      0.98   1270881
+           1       0.03      0.93      0.06      1643
+
+    accuracy                           0.96   1272524
+   macro avg       0.52      0.94      0.52   1272524
+weighted avg       1.00      0.96      0.98   1272524
+
+PR AUC: 0.0292

@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  fraud-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fraud_detection_api
+    ports:
+      - "8080:8080"         # Access at http://localhost:8080
+    environment:
+      - PORT=8080
+    # Mount models directory so you can swap models without rebuilding
+    volumes:
+      - ./models:/app/models:ro
+    restart: unless-stopped
